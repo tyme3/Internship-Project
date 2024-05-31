@@ -11,3 +11,4 @@ Feature: Contact Us Page Access
     And I click on the Contact Us option
     Then the Contact Us page should open
     And there should be at least 4 social media icons
+
