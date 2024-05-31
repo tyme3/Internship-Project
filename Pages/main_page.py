@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 class MainPage:
     def __init__(self, driver):
         self.driver = driver
@@ -19,9 +20,3 @@ class MainPage:
 
         continue_button = self.driver.find_element(By.XPATH, "//a[@wized='loginButton']")
         continue_button.click()
-
-
-
-
-
-

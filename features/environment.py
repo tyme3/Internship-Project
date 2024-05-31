@@ -1,9 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.firefox.service import Service as FirefoxService
+# from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from App.application import Application
 
 
@@ -11,16 +10,21 @@ def browser_init(context):
     """
     :param context: Behave context
     """
-    driver_path = ChromeDriverManager().install()
-    service = Service(driver_path)
-    context.driver = webdriver.Chrome(service=service)
 
-    context.driver.maximize_window()
+    driver_path = ChromeDriverManager().install()
+    service = ChromeService(driver_path)
+    chrome_options = webdriver.ChromeOptions()
+    context.driver = webdriver.Chrome(service=service, options=chrome_options)
+
+    # driver_path = GeckoDriverManager().install()
+    # service = FirefoxService(driver_path)
+    # firefox_options = webdriver.FirefoxOptions()
+    # context.driver = webdriver.Firefox(service=service, options=firefox_options)
 
     context.driver.maximize_window()
     context.driver.implicitly_wait(4)
 
-    context.App = Application(context.driver)
+    context.app = Application(context.driver)
 
 
 def before_scenario(context, scenario):
@@ -37,6 +41,7 @@ def after_step(context, step):
         print('\nStep failed: ', step)
 
 
-def after_scenario(context, feature):
+def after_scenario(context, scenario):
     context.driver.delete_all_cookies()
     context.driver.quit()
+
