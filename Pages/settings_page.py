@@ -1,11 +1,12 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from Pages.base_page import BasePage
 
 
-class SettingsPage:
+class SettingsPage(BasePage):
     def __init__(self, driver):
-        self.driver = driver
+        super().__init__(driver)
 
     def open_settings_page(self):
         wait = WebDriverWait(self.driver, 10)
@@ -15,6 +16,6 @@ class SettingsPage:
     def click_contact_us(self):
         wait = WebDriverWait(self.driver, 10)
         contact_us_locator = (By.XPATH, "//div[@class='setting-text' and text()='Contact us']")
+        # Wait for the contact us option to be clickable
         contact_us_option = wait.until(EC.element_to_be_clickable(contact_us_locator))
         contact_us_option.click()
-

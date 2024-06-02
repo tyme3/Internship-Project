@@ -14,11 +14,18 @@ def browser_init(context):
     driver_path = ChromeDriverManager().install()
     service = ChromeService(driver_path)
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
+
     context.driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # driver_path = GeckoDriverManager().install()
     # service = FirefoxService(driver_path)
     # firefox_options = webdriver.FirefoxOptions()
+    # firefox_options.add_argument("--headless")
+    # firefox_options.add_argument("--disable-gpu")
+    # firefox_options.add_argument("--window-size=1920,1080")
     # context.driver = webdriver.Firefox(service=service, options=firefox_options)
 
     context.driver.maximize_window()
@@ -41,7 +48,6 @@ def after_step(context, step):
         print('\nStep failed: ', step)
 
 
-def after_scenario(context, scenario):
-    context.driver.delete_all_cookies()
-    context.driver.quit()
-
+# def after_scenario(context, scenario):
+#     context.driver.delete_all_cookies()
+#     context.driver.quit()
