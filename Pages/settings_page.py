@@ -16,6 +16,6 @@ class SettingsPage(BasePage):
     def click_contact_us(self):
         wait = WebDriverWait(self.driver, 10)
         contact_us_locator = (By.XPATH, "//div[@class='setting-text' and text()='Contact us']")
-        # Wait for the contact us option to be clickable
+
         contact_us_option = wait.until(EC.element_to_be_clickable(contact_us_locator))
         contact_us_option.click()

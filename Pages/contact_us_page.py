@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from Pages.base_page import BasePage
 
+
 class ContactUsPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
@@ -18,6 +19,6 @@ class ContactUsPage(BasePage):
         wait = WebDriverWait(self.driver, 10)
         social_media_icons = wait.until(
             EC.presence_of_all_elements_located((By.XPATH, "//a[contains(@class, 'contact-button')]"))
-        )  # Explicit wait for the presence of all social media icons
-        assert len(social_media_icons) >= 4, f"Expected at least 4 social media icons, Actual: {len(social_media_icons)}"
-
+        )
+        assert len(
+            social_media_icons) >= 4, f"Expected at least 4 social media icons, Actual: {len(social_media_icons)}"
