@@ -5,6 +5,8 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from App.application import Application
 from selenium.webdriver.chrome.options import Options
+import allure
+from allure_commons.types import AttachmentType
 
 
 def browser_init(context, scenario_name):
@@ -13,28 +15,28 @@ def browser_init(context, scenario_name):
     """
 
 
-    # driver_path = ChromeDriverManager().install()
-    # service = ChromeService(driver_path)
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--disable-gpu")
-    # chrome_options.add_argument("--window-size=1920,1080")
-    # context.driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver_path = ChromeDriverManager().install()
+    service = ChromeService(driver_path)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
+    context.driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # BROWSERSTACK
-    bs_username = 'dimitrikoger_zer4fC'
-    bs_access_key = 'ocBGtnnQypGzqVqxPceo'
-    url = f'http://{bs_username}:{bs_access_key}@hub-cloud.browserstack.com/wd/hub'
+    # bs_username = 'dimitrikoger_zer4fC'
+    # bs_access_key = 'ocBGtnnQypGzqVqxPceo'
+    # url = f'http://{bs_username}:{bs_access_key}@hub-cloud.browserstack.com/wd/hub'
 
-    options = Options()
-    bstack_options = {
-        'os': 'OS X',
-        'osVersion': 'Big Sur',
-        'browserName': 'Safari',
-        'sessionName': scenario_name
-    }
-    options.set_capability('bstack:options', bstack_options)
-    context.driver = webdriver.Remote(command_executor=url, options=options)
+    # options = Options()
+    # bstack_options = {
+    #     'os': 'OS X',
+    #     'osVersion': 'Big Sur',
+    #     'browserName': 'Safari',
+    #     'sessionName': scenario_name
+    # }
+    # options.set_capability('bstack:options', bstack_options)
+    # context.driver = webdriver.Remote(command_executor=url, options=options)
 
 
     # driver_path = GeckoDriverManager().install()
@@ -54,6 +56,7 @@ def browser_init(context, scenario_name):
 def before_scenario(context, scenario):
     print('\nStarted scenario: ', scenario.name)
     browser_init(context, scenario.name)
+    allure.dynamic.story(scenario.name)
 
 
 def before_step(context, step):
@@ -62,6 +65,7 @@ def before_step(context, step):
 
 def after_step(context, step):
     if step.status == 'failed':
+        allure.attach(context.driver.get_screenshot_as_png(), name='screenshot', attachment_type=AttachmentType.PNG)
         print('\nStep failed: ', step)
 
 
