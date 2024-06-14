@@ -1,3 +1,5 @@
+from time import sleep
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -22,3 +24,4 @@ class ContactUsPage(BasePage):
         )
         assert len(
             social_media_icons) >= 4, f"Expected at least 4 social media icons, Actual: {len(social_media_icons)}"
+        sleep(1)

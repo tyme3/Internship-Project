@@ -7,20 +7,30 @@ from App.application import Application
 from selenium.webdriver.chrome.options import Options
 import allure
 from allure_commons.types import AttachmentType
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 def browser_init(context, scenario_name):
     """
     :param context: Behave context
     """
-
-
     driver_path = ChromeDriverManager().install()
     service = ChromeService(driver_path)
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--window-size=1920,1080")
+
+    # Mobile emulation
+    mobile_emulation = {
+        "deviceName": "Pixel 2 XL"
+    }
+
+    chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+    chrome_options.add_argument("--enable-mobile-emulation")
+    chrome_options.add_argument("--window-size=425,824")
+
+    # Chrome Headless Mode
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--disable-gpu")
+    # chrome_options.add_argument("--window-size=1920,1080")
     context.driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # BROWSERSTACK
@@ -28,17 +38,31 @@ def browser_init(context, scenario_name):
     # bs_access_key = 'ocBGtnnQypGzqVqxPceo'
     # url = f'http://{bs_username}:{bs_access_key}@hub-cloud.browserstack.com/wd/hub'
 
+    # SAFARI SETTINGS FOR BROWSERSTACK
     # options = Options()
     # bstack_options = {
     #     'os': 'OS X',
     #     'osVersion': 'Big Sur',
     #     'browserName': 'Safari',
-    #     'sessionName': scenario_name
+    #     'sessionName': scenario_name,
     # }
+
+    # # PIXEL 2 XL SETTINGS FOR BROWSERSTACK
+    # options = Options()
+    # bstack_options = {
+    #     'os': 'Windows',
+    #     'osVersion': '10',
+    #     'browserName': 'Chrome',
+    #     'browserVersion': 'latest',
+    #     'device': 'Google Pixel 2 XL',
+    #     'realMobile': 'true',
+    #     'sessionName': scenario_name,
+    # }
+
     # options.set_capability('bstack:options', bstack_options)
     # context.driver = webdriver.Remote(command_executor=url, options=options)
 
-
+    # Firefox Headless mode
     # driver_path = GeckoDriverManager().install()
     # service = FirefoxService(driver_path)
     # firefox_options = webdriver.FirefoxOptions()
@@ -65,11 +89,9 @@ def before_step(context, step):
 
 def after_step(context, step):
     if step.status == 'failed':
-        allure.attach(context.driver.get_screenshot_as_png(), name='screenshot', attachment_type=AttachmentType.PNG)
         print('\nStep failed: ', step)
 
 
 def after_scenario(context, scenario):
     context.driver.delete_all_cookies()
     context.driver.quit()
-

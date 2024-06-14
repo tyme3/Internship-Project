@@ -22,12 +22,14 @@ def step_when_login(context):
 @when('I click on the settings option')
 @allure.step('When I click on the settings option')
 def step_when_click_settings(context):
+    context.driver.implicitly_wait(4)
     context.app.open_settings_page()
 
 
 @when('I click on the Contact Us option')
 @allure.step('When I click on the Contact Us option')
 def step_when_click_contact_us(context):
+    context.driver.implicitly_wait(4)
     context.app.open_contact_us()
 
 
@@ -40,4 +42,5 @@ def step_then_contact_us_page_open(context):
 @then('There should be at least 4 social media icons')
 @allure.step('Then there should be at least 4 social media icons')
 def step_then_social_media_icons(context):
+    context.driver.implicitly_wait(4)
     context.app.verify_social_media_icons()

@@ -1,3 +1,4 @@
+from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -24,3 +25,4 @@ class MainPage(BasePage):
 
         continue_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//a[@wized='loginButton']")))
         continue_button.click()
+        sleep(1)
